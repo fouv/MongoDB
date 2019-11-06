@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,155 +23,194 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body id="page-top">
+<body id="page-top">
 
-      <%- include('header.ejs') %>
+    <%- include('header.ejs') %>
 
-      <div id="wrapper">
-  
-        <!-- Sidebar -->
-        <%- include('sidebar.ejs') %>
+        <div id="wrapper">
 
-      <div id="content-wrapper">
+            <!-- Sidebar -->
+            <%- include('sidebar.ejs') %>
 
-        <div class="container-fluid">
+                <div id="content-wrapper">
 
-          <div class="card mb-3">
-            <div class="card-header">
-            <i class="fas fa-table"></i>
-             Detail de la commande</div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table id="order-info" class="table table-bordered" width="100%" cellspacing="0">
-                  <thead>
-                    <thead>
-                      <tr>
-                        <th>Date Commande</th>
-                        <th>Nom</th>
-                        <th>Prenom</th>
-                        <th>Sexe</th>
-                        <th>Total</th>
-                        <th>Frais de port</th>
-                        <th>Payée</th>
-                        <th>Date Paiement</th>
-                        <th>Expédiée</th>
-                        <th>Date Exp</th>
-                        <th>Adresse</th>
-                        <th>Ville</th>
-                        <th>Code postal</th>
+                    <div class="container-fluid">
 
-                      </tr>
-                    </thead>
-                  </thead>
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fas fa-table"></i> Detail de la commande</div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="order-info" class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead>
+                                            <thead>
 
-                  <tbody>
-                    <tr>
-                      <td>22/01/19</td>
-                      <td>John</td>
-                      <td>Doe</td>
-                      <td><i class="fas fa-male"></i></td>
-                      <td>869€</td>
-                      <td>23€</td>
-                      <td class="status-secondary"><i class="fas fa-circle"></i></td>
-                      <td>-</td>
-                      <td class="status-secondary"><i class="fas fa-circle"></i></td>
-                      <td>-</td>
-                      <td>22 Rue des Martyrs</td>
-                      <td>Paris</td>
-                      <td>75009</td>
+                                                <tr>
+                                                    <th>Date Commande </th>
+                                                    <th>Nom</th>
+                                                    <th>Prenom</th>
+                                                    <th>Sexe</th>
+                                                    <th>Total</th>
+                                                    <th>Frais de port</th>
+                                                    <th>Payée</th>
+                                                    <th>Date Paiement</th>
+                                                    <th>Expédiée</th>
+                                                    <th>Date Exp</th>
+                                                    <th>Adresse</th>
+                                                    <th>Ville</th>
+                                                    <th>Code postal</th>
 
-                    </tr>
+                                                </tr>
+                                            </thead>
+                                        </thead>
 
-                  </tbody>
-                </table>
+                                        <tbody>
+
+                                            <tr>
+                                                <td>
+                                                    <%= orders.date_insert.toISOString().split('T')[0] %>
+                                                </td>
+                                                <td>
+                                                    <%=orders.user.lastName%>
+                                                </td>
+                                                <td>
+                                                    <%=orders.user.firstName%>
+                                                </td>
+                                                <td>
+                                                    <% if (orders.user.gender === "male") { 
+                                                        %> <i class="fas fa-male"></i>
+                                                        <%
+                                                    } %> <i class="fas fa-female"></i>
+
+                                                </td>
+                                                <td>
+                                                    <%=orders.total%>€</td>
+                                                <td>
+                                                    <%=orders.shipping_cost%>€</td>
+                                                <td <% if(orders.statut_payment==="waiting" ) { %> class="bg-warning"
+                                                    <% } 
+                                                        else if(orders.statut_payment ==="refused") { %> class="bg-danger"
+                                                        <% } else { %>
+                                                            class="bg-success"
+                                                            <% } %> >
+                                                </td>
+                                                <td>
+                                                    <% if(orders.statut_payment==="validated") { %>
+                                                        <%=orders.date_payment.toISOString().split('T')[0]%>
+                                                            <% } else { %>
+                                                                -
+                                                                <%} %>
+                                                </td>
+                                                <td <% if(orders.status_shipment===true) { %>
+                                                    class="bg-success"
+                                                    <% } else { %> class="bg-light"
+                                                        <% } %>
+                                                            >
+                                                </td>
+                                                <td>
+                                                    <%=orders.date_shipment.toISOString().split('T')[0]%>
+                                                </td>
+                                                <td>
+                                                    <%=orders.delivery_address%>
+                                                </td>
+                                                <td>
+                                                    <%=orders.delivery_city%>
+                                                </td>
+                                                <td>
+                                                    <%=orders.delivery_zipcode%>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
 
 
 
-                <table id="product-list" class="table table-bordered" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Libelle</th>
-                      <th>Description</th>
-                      <th>Poids</th>
-                      <th>Prix</th>
-                      <th>Image</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Libelle</th>
-                      <th>Description</th>
-                      <th>Poids</th>
-                      <th>Prix</th>
-                      <th>Image</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>Ninebot by Segway Kickscooter ES2</td>
-                      <td>Urbain - Route (8'), Autonomie Jusqu'à 25 km, Vitesse max. 25 km/h</td>
-                      <td>12,5kg</td>
-                      <td>499€</td>
-                      <td><img src="/images/ninebot-segway-kickscooter.jpg"></td>
-                    </tr>
-                    <tr>
-                      <td>Xiaomi M365</td>
-                      <td>Autonomie Jusqu'à 25 km, Vitesse max. 25 km/h</td>
-                      <td>12,5kg</td>
-                      <td>370€</td>
-                      <td><img src="/images/xiaomi M365-gris.jpg"></td>
-                    </tr>
+                                    <table id="product-list" class="table table-bordered" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Libelle</th>
+                                                <th>Description</th>
+                                                <th>Poids</th>
+                                                <th>Prix</th>
+                                                <th>Image</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Libelle</th>
+                                                <th>Description</th>
+                                                <th>Poids</th>
+                                                <th>Prix</th>
+                                                <th>Image</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            <% for(var i=0; i<orders.articles.length;i++) { %>
+                                                <tr>
+                                                    <td>
+                                                        <%=orders.articles[i].title%>
+                                                    </td>
+                                                    <td>
+                                                        <%=orders.articles[i].description%>
+                                                    </td>
+                                                    <td>
+                                                        <%=orders.articles[i].weight%>kg</td>
+                                                    <td>
+                                                        <%=orders.articles[i].price%>€</td>
+                                                    <td><img src="../images/<%=orders.articles[i].img%>"></td>
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+                                    </table>
 
-                  </tbody>
-                </table>
+
+                                </div>
+                            </div>
+                        </div>
 
 
-              </div>
-            </div>
-          </div>
+                    </div>
+                    <!-- /.container-fluid -->
 
+                    <!-- Sticky Footer -->
+                    <footer class="sticky-footer">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright © Blackboard</span>
+                            </div>
+                        </div>
+                    </footer>
+
+                </div>
+                <!-- /.content-wrapper -->
 
         </div>
-        <!-- /.container-fluid -->
-
-        <!-- Sticky Footer -->
-        <footer class="sticky-footer">
-          <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-              <span>Copyright © Blackboard</span>
-            </div>
-          </div>
-        </footer>
-
-      </div>
-      <!-- /.content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
+        <!-- /#wrapper -->
 
 
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+        <!-- Page level plugin JavaScript-->
+        <script src="vendor/chart.js/Chart.min.js"></script>
+        <script src="vendor/datatables/jquery.dataTables.js"></script>
+        <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin.min.js"></script>
 
-    <!-- Demo scripts for this page-->
-    <script src="js/demo/datatables-demo.js"></script>
-    <script src="js/demo/chart-area-demo.js"></script>
+        <!-- Demo scripts for this page-->
+        <script src="js/demo/datatables-demo.js"></script>
+        <script src="js/demo/chart-area-demo.js"></script>
 
-  </body>
+</body>
 
 </html>

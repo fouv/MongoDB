@@ -3,20 +3,23 @@ var router = express.Router();
 
 var ArticleModel = require('../models/articles');
 var userModel = require('../models/users');
+var OrderModel = require('../models/orders');
+var TaskModel = require('../models/task');
+var MessageModel = require('../models/messages');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' });
 });
 
 /* GET tasks page. */
 router.get('/tasks-page', function(req, res, next) {
-  res.render('tasks', { title: 'Express' });
+    res.render('tasks', { title: 'Express' });
 });
 
 /* GET Messages page. */
 router.get('/messages-page', function(req, res, next) {
-  res.render('messages', { title: 'Express' });
+    res.render('messages', { title: 'Express' });
 });
 
 
@@ -24,33 +27,47 @@ router.get('/messages-page', function(req, res, next) {
 /* GET Messages page. */
 router.get('/users-page', function(req, res, next) {
 
-  userModel.find(function(err,users){
-    console.log(users)
-    res.render('users', {users});
-  })
+    userModel.find(function(err, users) {
+
+        res.render('users', { users });
+    })
 });
-
-
-
 
 /* GET Messages page. */
 router.get('/catalog-page', function(req, res, next) {
 
-  ArticleModel.find(function(err,articles){
-    console.log(articles)
-    res.render('catalog', {articles});
-  })
+    ArticleModel.find(function(err, articles) {
+
+        res.render('catalog', { articles });
+    })
 });
 
 /* GET Messages page. */
 router.get('/orders-list-page', function(req, res, next) {
-  res.render('orders-list', { title: 'Express' });
+
+    OrderModel.find(function(err, orders) {
+        console.log('console log des orders ', orders)
+
+        res.render('orders-list', { title: 'Express', orders });
+    })
 });
 
-/* GET Messages page. */
+
+/* GET 1 order page. */
 router.get('/order-page', function(req, res, next) {
-  res.render('order', { title: 'Express' });
+    OrderModel.findById(req.query.id)
+        .populate('user')
+        .populate('articles')
+        .exec(function(err, orders) {
+            console.log('affiche titre articles', orders.articles[0].title);
+            res.render('order', { orders });
+        })
+
+
+
 });
+
+
 
 
 
